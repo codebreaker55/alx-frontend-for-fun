@@ -1,5 +1,50 @@
 /* a Sass file that sorts $list_to_sort and prints the sorted list in the debug output */
 
-@import "103-sort_list";
+@import '103-sort_list';
 
-@debug $list_to_sort;
+$sort-order: a b c d e f g h i j k l m n o p q r s t u v w x y z !default;
+
+// helper function to compare two strings
+@function _compare-strings($i, $j, $order) {
+  $i: to-lower-case(unquote($i));
+  $j: to-lower-case(unquote($j));
+
+  @for $n from 1 through min(str-length($i), str-length($j)) {
+    $char-i: str-slice($i, $n, $n);
+    $char-j: str-slice($j, $n, $n);
+
+    @if index($order, $char-i) != index($order, $char-j) {
+      @return index($order, $char-i) < index($order, $char-j);
+    }
+  }
+
+  @return str-length($i) < str-length($j);
+}
+
+// optimized quick-sort function
+@function quick-sort($list, $order: $sort-order) {
+  @if length($list) <= 1 {
+    @return $list;
+  }
+
+  $pivot: nth($list, ceil(length($list) / 2));
+  $less: ();
+  $equal: ();
+  $greater: ();
+
+  @each $item in $list {
+    @if $item == $pivot {
+      $equal: append($equal, $item, list-separator($list));
+    } @else if _compare-strings($item, $pivot, $order) {
+      $less: append($less, $item, list-separator($list));
+    } @else {
+      $greater: append($greater, $item, list-separator($list));
+    }
+  }
+
+  @return join(join(quick-sort($less, $order), $equal), quick-sort($greater, $order));
+}
+
+$sorted-list: quick-sort($list_to_sort);
+
+@debug "Sorted list: #{$sorted-list}";
