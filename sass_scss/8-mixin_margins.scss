@@ -1,0 +1,14 @@
+/* Sass file that assigns maargine left and right */
+
+@mixin sass-margin($value) {
+	margin-left: $value;
+	margin-right: $value;
+}
+
+body {
+	@include sass-margin(10px);
+}
+
+div {
+	@include sass-margin(15px);
+}
