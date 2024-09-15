@@ -1,0 +1,7 @@
+/* a Sass file that creates classes with different width */
+
+@for $class from 1 through 4 {
+	.col-#{$class} {
+		width: 100% / $class;
+	}
+}
