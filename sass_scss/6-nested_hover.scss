@@ -1,9 +1,9 @@
 /* a Sass file that assigns color to button and hovers over button tags */
 
 button {
-    color: #FF0000;
-}
+    color: #FF0000;  // Text color for button tags
 
-button:hover {
-    color: #00FF00;
+    &:hover {
+        color: #00FF00;  // Change text color on hover
+    }
 }
